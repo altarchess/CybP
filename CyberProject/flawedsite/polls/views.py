@@ -3,7 +3,7 @@ from django.http import Http404
 from .models import Question
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
-
+from django.contrib.auth import authenticate, login
 
 def index(request):
     latest_question_list = Question.objects.order_by('-pub_date')[:5]
@@ -41,3 +41,12 @@ def vote(request, question_id):
         # user hits the Back button.
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
 
+def login(request):
+    username = request.POST["username"]
+    password = request.POST["password"]
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+        login(request, user)
+        return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+    else:
+        return "Incorrect credentials"
