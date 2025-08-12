@@ -41,6 +41,12 @@ def vote(request, question_id):
         # user hits the Back button.
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
 
+def registrationpage(request):
+    return render(request, 'polls/register.html')
+
+def register(request):
+    return ""
+
 def login(request):
     username = request.POST["username"]
     password = request.POST["password"]
