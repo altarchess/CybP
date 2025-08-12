@@ -72,3 +72,7 @@ def user_login(request):
         return HttpResponseRedirect("/polls")
     else:
         return HttpResponseRedirect("/polls")
+
+def user_logout(request):
+    logout(request)
+    return HttpResponseRedirect("/polls")
