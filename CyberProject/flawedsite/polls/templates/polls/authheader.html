@@ -1,5 +1,8 @@
 {% if request.user.is_authenticated %}
-<p> Logged in as : {% request.user %} </p>
+<p> Logged in as: {{ request.user }} 
+<br>
+<a href="/polls/logout">logout</a>
+</p>
 {% else %}
 <p> <form method="POST" action="login">
 {% csrf_token %}

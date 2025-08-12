@@ -3,7 +3,7 @@ from django.http import Http404
 from .models import Question, SecurityQuestion
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.db.utils import IntegrityError
 
