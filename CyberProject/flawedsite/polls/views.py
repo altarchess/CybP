@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
+from django.db.utils import IntegrityError
 
 def index(request):
     latest_question_list = Question.objects.order_by('-pub_date')[:5]
@@ -45,20 +46,24 @@ def vote(request, question_id):
 def registrationpage(request):
     return render(request, 'polls/register.html')
 
-def register(request):
+def user_register(request):
     print(request.POST)
     _username = request.POST["username"]
     _password = request.POST["password"]
     _securityquestions = request.POST["securityquestions"]
     _securityquestion = request.POST["securityquestion"]
-    _user = User.objects.create_user(username = _username, password = _password)
-    securityquestion_entry = SecurityQuestion()
-    securityquestion_entry.question_text = _securityquestions
-    securityquestion_entry.answer_text = _securityquestion
-    securityquestion_entry.save()
+    try:
+        _user = User.objects.create_user(username = _username, password = _password)
+        securityquestion_entry = SecurityQuestion()
+        securityquestion_entry.question_text = _securityquestions
+        securityquestion_entry.answer_text = _securityquestion
+        securityquestion.owner = _user
+        securityquestion_entry.save()
+    except:
+        HttpResponseRedirect("/polls")
     return HttpResponseRedirect("/polls")
 
-def login(request):
+def user_login(request):
     username = request.POST["username"]
     password = request.POST["password"]
     user = authenticate(request, username=username, password=password)
@@ -66,4 +71,4 @@ def login(request):
         login(request, user)
         return HttpResponseRedirect("/polls")
     else:
-        return "Incorrect credentials"
+        return HttpResponseRedirect("/polls")
