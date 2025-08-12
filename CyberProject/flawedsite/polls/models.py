@@ -2,11 +2,12 @@ import datetime
 
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 class Question(models.Model):
     question_text = models.CharField(max_length=200)
     pub_date = models.DateTimeField('date published')
-    owner = 0
+    #owner = models.ForeignKey(User, on_delete=models.CASCADE)
     public = False
 
     def __str__(self):
@@ -23,3 +24,8 @@ class Choice(models.Model):
 
     def __str__(self):
         return self.choice_text
+
+class SecurityQuestion(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, default = 0)
+    question_text = models.CharField(max_length=200)
+    answer_text = models.CharField(max_length=200)
