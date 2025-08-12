@@ -1,19 +1,27 @@
 {% if request.user.is_authenticated %}
 <p> You are already logged in, <a href="/polls/logout">logout</a> or <a href="/polls">return home</a></p>
 {% else %}
-<p> <form method="POST" action="polls/login">
+<p> <form method="POST" action="polls/register">
 {% csrf_token %}
 <div class="form-group">
-<label class="text-primary text-dark font-weight-bold">You are not currently logged in, login or <a href="/polls/register">register</a> </label>
+<label class="text-primary text-dark font-weight-bold">Register a new account</a> </label>
 <br>
 <input type="text" class="form-control" name="username" placeholder="Username">
 <br>
 <input type="password" class="form-control" name="password" placeholder="Password">
 <br>
-
+Security question for resetting your password :V
+<br>
+<select name="securityquestions" id="securityquestions">
+    <option value="What is your mother’s maiden name?">What is your mother’s maiden name?</option>
+    <option value="What was the name of your first pet?">What was the name of your first pet?</option>
+    <option value="What is your favorite color?">What is your favorite color?</option>
+    <option value="What is your favorite book?">What is your favorite book?</option>
+  </select>
+<br>
 <input type="text" class="form-control" name="securityquestion" placeholder="Answer">
 <br>
-<button type="submit" class="btn btn-primary btn-lg">Log in</button>
+<button type="submit" class="btn btn-primary btn-lg">Register</button>
 </div> 
 </form>
 
