@@ -1,0 +1,25 @@
+{% include "polls/authheader.html" %}
+
+{% if request.user.is_authenticated %}
+<p> <form method="POST" action="add_poll">
+{% csrf_token %}
+<div class="form-group">
+<label class="text-primary text-dark font-weight-bold">Register a new poll or <a href="/polls">return home</a> </label>
+<br>
+<input type="text" class="form-control" name="polltext" placeholder="Question">
+<br>
+<textarea name="pollcontext" placeholder="Give some more context/a description">
+</textarea>
+<br>
+<input type="text" class="form-control" name="a1" placeholder="answer">
+<br>
+<input type="text" class="form-control" name="a2" placeholder="answer">
+<br>
+<button type="submit" class="btn btn-primary btn-lg">Register poll</button>
+</div> 
+</form>
+
+</p>
+{% else %}
+
+{% endif %}

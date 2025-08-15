@@ -45,7 +45,7 @@ def vote(request, question_id):
 
 def add_poll_page(request):
     return render(request, 'polls/add_poll.html')
-    
+
 def registration_page(request):
     return render(request, 'polls/register.html')
 
