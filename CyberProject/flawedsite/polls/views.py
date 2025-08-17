@@ -1,11 +1,12 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http import Http404
-from .models import Question, SecurityQuestion
+from .models import Question, SecurityQuestion, Choice
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.db.utils import IntegrityError
+import traceback
 
 def index(request):
     latest_question_list = Question.objects.order_by('-pub_date')[:5]
@@ -46,21 +47,26 @@ def vote(request, question_id):
 def add_poll_page(request):
     return render(request, 'polls/add_poll.html')
 
-def user_register(request):
+def add_poll(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect("/polls")
     print(request.POST)
     _polltext = request.POST["polltext"]
-    _pollcontext = request.POST["pollcontext"]
+    _polldesc = request.POST["pollcontext"]
     _option1 = request.POST["option1"]
     _option2 = request.POST["option2"]
     try:
-        q = Question()
-        _user = User.objects.create_user(username = _username, password = _password)
-        securityquestion_entry = SecurityQuestion()
-        securityquestion_entry.question_text = _securityquestions
-        securityquestion_entry.answer_text = _securityquestion
-        securityquestion.owner = _user
-        securityquestion_entry.save()
+        print("AWDASDS")
+        q = Question(question_text = _polltext, question_desc = _polldesc, owner = request.user)
+        print("AWDASDS")
+        q.save()
+        print("AWDASDS")
+        c1 = Choice(question = q.ForeignKey, choice_text = _option1)
+        c2 = Choice(question = q.ForeignKey, choice_text = _option2)
+        c1.save()
+        c2.save()
     except:
+        print(traceback.format_exc())
         HttpResponseRedirect("/polls")
     return HttpResponseRedirect("/polls")
 
