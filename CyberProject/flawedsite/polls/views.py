@@ -61,8 +61,8 @@ def add_poll(request):
         print("AWDASDS")
         q.save()
         print("AWDASDS")
-        c1 = Choice(question = q.ForeignKey, choice_text = _option1)
-        c2 = Choice(question = q.ForeignKey, choice_text = _option2)
+        c1 = Choice(question = q, choice_text = _option1)
+        c2 = Choice(question = q, choice_text = _option2)
         c1.save()
         c2.save()
     except:

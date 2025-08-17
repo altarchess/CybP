@@ -1,6 +1,7 @@
 {% include "polls/authheader.html" %}
 
 <h1>{{ question.question_text }}</h1>
+<p>{{ question.question_desc }}</p>
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
