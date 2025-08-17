@@ -46,6 +46,24 @@ def vote(request, question_id):
 def add_poll_page(request):
     return render(request, 'polls/add_poll.html')
 
+def user_register(request):
+    print(request.POST)
+    _polltext = request.POST["polltext"]
+    _pollcontext = request.POST["pollcontext"]
+    _option1 = request.POST["option1"]
+    _option2 = request.POST["option2"]
+    try:
+        q = Question()
+        _user = User.objects.create_user(username = _username, password = _password)
+        securityquestion_entry = SecurityQuestion()
+        securityquestion_entry.question_text = _securityquestions
+        securityquestion_entry.answer_text = _securityquestion
+        securityquestion.owner = _user
+        securityquestion_entry.save()
+    except:
+        HttpResponseRedirect("/polls")
+    return HttpResponseRedirect("/polls")
+
 def registration_page(request):
     return render(request, 'polls/register.html')
 

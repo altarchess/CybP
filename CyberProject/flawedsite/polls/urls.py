@@ -17,5 +17,6 @@ urlpatterns = [
     path('register', views.user_register, name="register"),
     path('logout', views.user_logout, name="logout"),
     path('addpollpage', views.add_poll_page, name="addpollpage"),
+    path('addpoll', views.add_poll, name="addpoll"),
 
 ]
