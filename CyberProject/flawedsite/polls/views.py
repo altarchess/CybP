@@ -56,11 +56,8 @@ def add_poll(request):
     _option1 = request.POST["option1"]
     _option2 = request.POST["option2"]
     try:
-        print("AWDASDS")
         q = Question(question_text = _polltext, question_desc = _polldesc, owner = request.user)
-        print("AWDASDS")
         q.save()
-        print("AWDASDS")
         c1 = Choice(question = q, choice_text = _option1)
         c2 = Choice(question = q, choice_text = _option2)
         c1.save()
@@ -103,3 +100,7 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return HttpResponseRedirect("/polls")
+
+def users(request):
+    users = User.objects.all().values()
+    return render(request, 'polls/users.html', users)
