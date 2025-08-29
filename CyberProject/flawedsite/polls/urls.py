@@ -19,5 +19,5 @@ urlpatterns = [
     path('addpollpage', views.add_poll_page, name="addpollpage"),
     path('addpoll', views.add_poll, name="addpoll"),
     path('users', views.users, name="users"),
-
+    path('user/<int:user_id>/', views.user, name='user'),
 ]

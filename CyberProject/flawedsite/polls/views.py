@@ -103,4 +103,9 @@ def user_logout(request):
 
 def users(request):
     users = User.objects.all().values()
-    return render(request, 'polls/users.html', users)
+    return render(request, 'polls/users.html', {"users" : users})
+
+def user(request, user_id):
+    user = User.objects.all().values()[user_id-1]
+    print(user)
+    return render(request, 'polls/user.html', {"user" : user})

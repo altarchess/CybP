@@ -26,6 +26,12 @@ class Choice(models.Model):
     def __str__(self):
         return self.choice_text
 
+class Votes(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    option_id = models.IntegerField(default=0)
+    user_id = models.IntegerField(default=0)
+
+
 class SecurityQuestion(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, default = 0)
     question_text = models.CharField(max_length=200)

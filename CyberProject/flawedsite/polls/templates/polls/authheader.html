@@ -4,6 +4,10 @@
 <a href="/polls/logout">logout</a>
 </p>
 {% else %}
+<div class="topnav">
+  <a href="/polls">Polls</a>
+  <a href="/polls/users">Users</a>
+</div>
 <p> <form method="POST" action="login">
 {% csrf_token %}
 <div class="form-group">
