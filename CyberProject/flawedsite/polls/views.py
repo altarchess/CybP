@@ -1,6 +1,6 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http import Http404
-from .models import Question, SecurityQuestion, Choice
+from .models import Question, SecurityQuestion, Choice, Vote
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
@@ -39,6 +39,7 @@ def vote(request, question_id):
             'error_message': "You didn't select a choice.",
         })
     else:
+        vote_entry = Vote()
         selected_choice.votes += 1
         selected_choice.save()
         # Always return an HttpResponseRedirect after successfully dealing
