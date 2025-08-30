@@ -97,10 +97,7 @@ def user_register(request):
     _securityquestion = request.POST["securityquestion"]
     try:
         _user = User.objects.create_user(username = _username, password = _password)
-        securityquestion_entry = SecurityQuestion()
-        securityquestion_entry.question_text = _securityquestions
-        securityquestion_entry.answer_text = _securityquestion
-        securityquestion.owner = _user
+        securityquestion_entry = SecurityQuestion(owner = _user, question_text = _securityquestions, answer_text = _securityquestion)
         securityquestion_entry.save()
     except:
         HttpResponseRedirect("/polls")
@@ -123,7 +120,17 @@ def user_login(request):
 def forgot(request, _username):
     user = get_object_or_404(User, username = _username)
     secq = SecurityQuestion.objects.get(pk = user.id)
-    return render(request, 'polls/register.html', {"secq" : secq, "user" : user})
+    return render(request, 'polls/forgot.html', {"secq" : secq, "user" : user})
+
+def forgot(request, _username):
+    user = get_object_or_404(User, username = _username)
+    secq = SecurityQuestion.objects.get(pk = user.id)
+    _seqc = request.POST["secq"]
+    _password = request.POST["password"]
+    _password2 = request.POST["password2"]
+    if _seqc == secq.answer_text and _password == _password2:
+        user.set_password(_password)
+    return HttpResponseRedirect("/polls")
 
 def user_logout(request):
     logout(request)

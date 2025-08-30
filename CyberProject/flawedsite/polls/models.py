@@ -33,6 +33,6 @@ class Votes(models.Model):
     username = models.CharField(max_length=200, default = "")
 
 class SecurityQuestion(models.Model):
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, default = 0)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
     question_text = models.CharField(max_length=200)
     answer_text = models.CharField(max_length=200)

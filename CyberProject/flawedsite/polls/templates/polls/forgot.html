@@ -2,8 +2,12 @@
 <p> You are already logged in, <a href="/polls/logout">logout</a> or <a href="/polls">return home</a></p>
 {% else %}
 Invalid password, try again or reset with security question!
+<br>
 {% include "polls/authheader.html" %}
 
+<br>
+Or reset using security question
+<br>
 <p> <form method="POST" action="reset/{{user.username}}">
 <div class="form-group">
 {{secq.question_text}}
@@ -12,7 +16,9 @@ Invalid password, try again or reset with security question!
 <br>
 <input type="password" class="form-control" name="password" placeholder="New password">
 <br>
-<button type="submit" class="btn btn-primary btn-lg">Register</button>
+<input type="password" class="form-control" name="password2" placeholder="New password again">
+<br>
+<button type="submit" class="btn btn-primary btn-lg">Reset</button>
 </div> 
 </form>
 
