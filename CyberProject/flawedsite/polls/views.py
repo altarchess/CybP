@@ -40,28 +40,21 @@ def vote(request, question_id):
     if not request.user.is_authenticated:
         return HttpResponseRedirect("/polls")
     question = get_object_or_404(Question, pk=question_id)
-    try:
-        selected_choice = question.choice_set.get(pk=request.POST['choice'])
-    except (KeyError, Choice.DoesNotExist):
-        # Redisplay the question voting form.
-        return render(request, 'polls/detail.html', {
-            'question': question,
-            'error_message': "You didn't select a choice.",
-        })
-    else:
-        for v in question.votes_set.all():
-            if v.user_id == request.user.id:
-                v.delete()
-        vote_entry = Votes()
-        vote_entry.question = question
-        vote_entry.user_id = request.user.id
-        vote_entry.option_id = pk=request.POST['choice']
-        vote_entry.username = request.user.username
-        vote_entry.save()
-        # Always return an HttpResponseRedirect after successfully dealing
-        # with POST data. This prevents data from being posted twice if a
-        # user hits the Back button.
+    if int(request.POST['choice']) < 1 or int(request.POST['choice']) > 2:
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+    for v in question.votes_set.all():
+        if v.user_id == request.user.id:
+            v.delete()
+    vote_entry = Votes()
+    vote_entry.question = question
+    vote_entry.user_id = request.user.id
+    vote_entry.option_id = request.POST['choice']
+    vote_entry.username = request.user.username
+    vote_entry.save()
+    # Always return an HttpResponseRedirect after successfully dealing
+    # with POST data. This prevents data from being posted twice if a
+    # user hits the Back button.
+    return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
 
 def add_poll_page(request):
     return render(request, 'polls/add_poll.html')
