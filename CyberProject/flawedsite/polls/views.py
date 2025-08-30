@@ -122,7 +122,7 @@ def forgot(request, _username):
     secq = SecurityQuestion.objects.get(pk = user.id)
     return render(request, 'polls/forgot.html', {"secq" : secq, "user" : user})
 
-def forgot(request, _username):
+def reset(request, _username):
     user = get_object_or_404(User, username = _username)
     secq = SecurityQuestion.objects.get(pk = user.id)
     _seqc = request.POST["secq"]
@@ -130,6 +130,7 @@ def forgot(request, _username):
     _password2 = request.POST["password2"]
     if _seqc == secq.answer_text and _password == _password2:
         user.set_password(_password)
+        user.save()
     return HttpResponseRedirect("/polls")
 
 def user_logout(request):
