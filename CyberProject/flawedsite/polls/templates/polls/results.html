@@ -1,6 +1,7 @@
 {% include "polls/authheader.html" %}
 
 <h1>{{ question.question_text }}</h1>
+<p>{{ question.question_desc }}</p>
 
 <ul>
 {% for choice in question.choice_set.all %}
@@ -9,7 +10,7 @@
 </ul>
 
 {% for vote in question.votes_set.all %}
-    <li> {{ vote.user_id }} -- {{ vote.option_id }} </li>
+    <li> User <a href="/polls/user/{{ vote.user_id }}/">{{ vote.username }}</a> voted for option {{ vote.option_id }} </li>
 {% endfor %}
 
 <a href="{% url 'polls:detail' question.id %}">Change your vote!</a>

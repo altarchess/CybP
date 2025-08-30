@@ -1,0 +1,20 @@
+{% if request.user.is_authenticated %}
+<p> You are already logged in, <a href="/polls/logout">logout</a> or <a href="/polls">return home</a></p>
+{% else %}
+Invalid password, try again or reset with security question!
+{% include "polls/authheader.html" %}
+
+<p> <form method="POST" action="reset/{{user.username}}">
+<div class="form-group">
+{{secq.question_text}}
+<br>
+<input type="text" class="form-control" name="secq" placeholder="Security question answer!">
+<br>
+<input type="password" class="form-control" name="password" placeholder="New password">
+<br>
+<button type="submit" class="btn btn-primary btn-lg">Register</button>
+</div> 
+</form>
+
+</p>
+{% endif %}

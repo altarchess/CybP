@@ -24,6 +24,16 @@ def detail(request, question_id):
 
 def results(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
+    #update vote totals
+    i = 1
+    for choice in question.choice_set.all():
+        total = 0
+        for vote in question.votes_set.all():
+            if vote.option_id == i:
+                total += 1
+        choice.votes = total
+        choice.save()
+        i += 1
     return render(request, 'polls/results.html', {'question': question})
 
 def vote(request, question_id):
@@ -46,9 +56,8 @@ def vote(request, question_id):
         vote_entry.question = question
         vote_entry.user_id = request.user.id
         vote_entry.option_id = pk=request.POST['choice']
+        vote_entry.username = request.user.username
         vote_entry.save()
-        #selected_choice.votes += 1
-        #selected_choice.save()
         # Always return an HttpResponseRedirect after successfully dealing
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
@@ -105,7 +114,16 @@ def user_login(request):
         login(request, user)
         return HttpResponseRedirect("/polls")
     else:
+        users = User.objects.all()
+        for user in users:
+            if user.username == username:
+                return HttpResponseRedirect("/polls/forgot/" + username)
         return HttpResponseRedirect("/polls")
+
+def forgot(request, _username):
+    user = get_object_or_404(User, username = _username)
+    secq = SecurityQuestion.objects.get(pk = user.id)
+    return render(request, 'polls/register.html', {"secq" : secq, "user" : user})
 
 def user_logout(request):
     logout(request)

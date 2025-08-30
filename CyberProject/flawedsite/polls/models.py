@@ -30,7 +30,7 @@ class Votes(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     option_id = models.IntegerField(default=0)
     user_id = models.IntegerField(default=0)
-
+    username = models.CharField(max_length=200, default = "")
 
 class SecurityQuestion(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, default = 0)
