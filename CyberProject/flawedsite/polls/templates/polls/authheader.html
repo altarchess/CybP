@@ -1,4 +1,8 @@
 {% if request.user.is_authenticated %}
+<div class="topnav">
+  <a href="/polls">Polls</a>
+  <a href="/polls/users">Users</a>
+</div>
 <p> Logged in as: {{ request.user }} 
 <br>
 <a href="/polls/logout">logout</a>

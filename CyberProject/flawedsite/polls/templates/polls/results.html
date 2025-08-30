@@ -8,8 +8,8 @@
 {% endfor %}
 </ul>
 
-{% for vote in question.vote_set.all %}
+{% for vote in question.votes_set.all %}
     <li> {{ vote.user_id }} -- {{ vote.option_id }} </li>
 {% endfor %}
 
-<a href="{% url 'polls:detail' question.id %}">Vote again?</a>
+<a href="{% url 'polls:detail' question.id %}">Change your vote!</a>

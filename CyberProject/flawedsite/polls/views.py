@@ -1,6 +1,6 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http import Http404
-from .models import Question, SecurityQuestion, Choice, Vote
+from .models import Question, SecurityQuestion, Choice, Votes
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
@@ -39,9 +39,16 @@ def vote(request, question_id):
             'error_message': "You didn't select a choice.",
         })
     else:
-        vote_entry = Vote()
-        selected_choice.votes += 1
-        selected_choice.save()
+        for v in question.votes_set.all():
+            if v.user_id == request.user.id:
+                v.delete()
+        vote_entry = Votes()
+        vote_entry.question = question
+        vote_entry.user_id = request.user.id
+        vote_entry.option_id = pk=request.POST['choice']
+        vote_entry.save()
+        #selected_choice.votes += 1
+        #selected_choice.save()
         # Always return an HttpResponseRedirect after successfully dealing
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
@@ -111,4 +118,10 @@ def users(request):
 def user(request, user_id):
     user = User.objects.all().values()[user_id-1]
     print(user)
-    return render(request, 'polls/user.html', {"user" : user})
+    qs = Question.objects.all()
+    votes_by_user = []
+    for q in qs:
+        for v in q.votes_set.all():
+            if v.user_id == user_id:
+                votes_by_user.append(v)
+    return render(request, 'polls/user.html', {"user" : user, "votes" : votes_by_user})
