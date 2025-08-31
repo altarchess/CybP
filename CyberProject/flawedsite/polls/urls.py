@@ -22,4 +22,6 @@ urlpatterns = [
     path('forgot/<_username>', views.forgot, name = "forgot"),
     path('reset/<_username>', views.reset, name = "reset"),
     path('user/<int:user_id>/', views.user, name='user'),
+    path('search', views.search, name='search'),
+    path('delete/<int:id>', views.delete_poll, name='delete'),
 ]

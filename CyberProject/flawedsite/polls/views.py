@@ -13,13 +13,20 @@ def index(request):
     context = {'latest_question_list': latest_question_list}
     return render(request, 'polls/index.html', context)
 
+def search(request):
+    latest_question_list = Question.objects.raw("SELECT * FROM polls_question WHERE question_text LIKE '%" + request.POST['keyword'] + "%'")
+    if len(latest_question_list) == 0:
+        latest_question_list = Question.objects.order_by('-pub_date')[:5]
+    context = {'latest_question_list': latest_question_list}
+    return render(request, 'polls/index.html', context)
 
 def detail(request, question_id):
     try:
         question = Question.objects.get(pk=question_id)
     except Question.DoesNotExist:
         raise Http404("Question does not exist")
-    return render(request, 'polls/detail.html', {'question': question})
+    owner = request.user.is_authenticated and request.user == question.owner
+    return render(request, 'polls/detail.html', {'question': question, 'owner' : owner})
 
 
 def results(request, question_id):
@@ -115,6 +122,13 @@ def forgot(request, _username):
     secq = SecurityQuestion.objects.get(pk = user.id)
     return render(request, 'polls/forgot.html', {"secq" : secq, "user" : user})
 
+def delete_poll(request, id):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect("/polls")
+    question = get_object_or_404(Question, pk=id)
+    question.delete()
+    return HttpResponseRedirect("/polls")
+
 def reset(request, _username):
     user = get_object_or_404(User, username = _username)
     secq = SecurityQuestion.objects.get(pk = user.id)
@@ -136,7 +150,6 @@ def users(request):
 
 def user(request, user_id):
     user = User.objects.all().values()[user_id-1]
-    print(user)
     qs = Question.objects.all()
     votes_by_user = []
     for q in qs:

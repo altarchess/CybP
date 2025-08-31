@@ -13,4 +13,11 @@
 {% endfor %}
 <input type="submit" value="Vote">
 </form>
+
+{% if owner %}
+<form action="/polls/delete/{{question.id}}" method="post">
+{% csrf_token %}
+<input type="submit" value="Delete poll">
+</form>
+{% endif %}
 <a href="/polls/{{ question.id }}/results">Polls results</a>
