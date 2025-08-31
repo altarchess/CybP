@@ -1,0 +1,29 @@
+{% if request.user.is_authenticated %}
+<div class="topnav">
+  <a href="/polls">Polls</a>
+  <a href="/polls/users">Users</a>
+</div>
+<p> Logged in as: {{ request.user }} 
+<br>
+<a href="/polls/logout">logout</a>
+</p>
+{% else %}
+<div class="topnav">
+  <a href="/polls">Polls</a>
+  <a href="/polls/users">Users</a>
+</div>
+<p> <form method="POST" action="/polls/login">
+{% csrf_token %}
+<div class="form-group">
+<label class="text-primary text-dark font-weight-bold">You are not currently logged in, login or <a href="/polls/registrationpage">register</a> </label>
+<br>
+<input type="text" class="form-control" name="username" placeholder="Username">
+<br>
+<input type="password" class="form-control" name="password" placeholder="Password">
+<br>
+<button type="submit" class="btn btn-primary btn-lg">Log in</button>
+</div> 
+</form>
+
+</p>
+{% endif %}

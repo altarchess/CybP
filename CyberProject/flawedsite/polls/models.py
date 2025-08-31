@@ -2,10 +2,14 @@ import datetime
 
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 class Question(models.Model):
     question_text = models.CharField(max_length=200)
-    pub_date = models.DateTimeField('date published')
+    question_desc = models.CharField(max_length=400)
+    pub_date = models.DateTimeField('date published', default = timezone.now)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    public = models.IntegerField(default=0)
 
     def __str__(self):
         return self.question_text
@@ -21,3 +25,14 @@ class Choice(models.Model):
 
     def __str__(self):
         return self.choice_text
+
+class Votes(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    option_id = models.IntegerField(default=0)
+    user_id = models.IntegerField(default=0)
+    username = models.CharField(max_length=200, default = "")
+
+class SecurityQuestion(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    question_text = models.CharField(max_length=200)
+    answer_text = models.CharField(max_length=200)

@@ -12,4 +12,16 @@ urlpatterns = [
     path('<int:question_id>/results/', views.results, name='results'),
     # ex: /polls/5/vote/
     path('<int:question_id>/vote/', views.vote, name='vote'),
+    path('login', views.user_login, name="login"),
+    path('registrationpage', views.registration_page, name="registrationpage"),
+    path('register', views.user_register, name="register"),
+    path('logout', views.user_logout, name="logout"),
+    path('addpollpage', views.add_poll_page, name="addpollpage"),
+    path('addpoll', views.add_poll, name="addpoll"),
+    path('users', views.users, name="users"),
+    path('forgot/<_username>', views.forgot, name = "forgot"),
+    path('reset/<_username>', views.reset, name = "reset"),
+    path('user/<int:user_id>/', views.user, name='user'),
+    path('search', views.search, name='search'),
+    path('delete/<int:id>', views.delete_poll, name='delete'),
 ]

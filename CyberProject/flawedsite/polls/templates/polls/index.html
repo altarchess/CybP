@@ -1,10 +1,33 @@
+{% include "polls/authheader.html" %}
+
 {% if latest_question_list %}
+
+<p> <form method="POST" action="/polls/search">
+{% csrf_token %}
+<div class="form-group">
+<label class="text-primary text-dark font-weight-bold">Search for a poll or find it in the list below </label>
+<br>
+<input type="text" class="form-control" name="keyword" placeholder="Keyword">
+<br>
+<button type="submit" class="btn btn-primary btn-lg">Search</button>
+</div> 
+</form>
+
+</p>
+
     <ul>
     {% for question in latest_question_list %}
+        {% if question.public == False %}
         <li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li>
-        <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
+        {% endif  %}
     {% endfor %}
     </ul>
 {% else %}
     <p>No polls are available.</p>
+{% endif %}
+
+{% if request.user.is_authenticated %}
+<a href="/polls/addpollpage"> Register a new poll </a>
+{% else %}
+<p>Logg in to register a new poll </p>
 {% endif %}
