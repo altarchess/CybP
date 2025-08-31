@@ -95,6 +95,17 @@ def user_register(request):
     print(request.POST)
     _username = request.POST["username"]
     _password = request.POST["password"]
+
+    # The following 5 commented lines would if uncommented simply check that the user submitted password
+    # has some complexity, and rejects unsafe users
+
+    #upper_case = sum(1 for c in _password if c.isupper())
+    #digits = sum(1 for c in _password if c.isdigit())
+    #length = len(_password)
+    #if upper_case < 1 or digits < 1 or length < 8:
+        #return HttpResponseRedirect("/polls/registrationpage")
+
+
     _securityquestions = request.POST["securityquestions"]
     _securityquestion = request.POST["securityquestion"]
     try:
