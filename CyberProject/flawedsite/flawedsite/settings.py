@@ -23,7 +23,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-*%2rk44s$huh!w4b_8hww9shacm%mr*%gwpjj0hu8*dt)zu=n1'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# This is a security misconfiguration for a production server. Leaking code etc to the user.
 DEBUG = True
+# Fix is the change it to
+# DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -44,6 +47,9 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    # Including the django "plugin"/"Middleware" that handles csrf token. 
+    # This requires the client to submit the correct csrf token each time a form is submitted
+    # the csrf token is only commented out in the password reset form.
     #'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',

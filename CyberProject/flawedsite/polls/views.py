@@ -14,7 +14,9 @@ def index(request):
     return render(request, 'polls/index.html', context)
 
 def search(request):
-    latest_question_list = Question.objects.raw("SELECT * FROM polls_question WHERE question_text LIKE '%" + request.POST['keyword'] + "%'")
+    # The following line uses a param instead of inserting the user supplied value directly into the query
+    # latest_question_list = Question.objects.raw("SELECT * FROM polls_question WHERE question_text = %s", [str(request.POST['keyword'])])
+    latest_question_list = Question.objects.raw("SELECT * FROM polls_question WHERE question_text ='" + str(request.POST['keyword']) + "'")
     if len(latest_question_list) == 0:
         latest_question_list = Question.objects.order_by('-pub_date')[:5]
     context = {'latest_question_list': latest_question_list}
@@ -123,9 +125,12 @@ def forgot(request, _username):
     return render(request, 'polls/forgot.html', {"secq" : secq, "user" : user})
 
 def delete_poll(request, id):
-    if not request.user.is_authenticated:
-        return HttpResponseRedirect("/polls")
     question = get_object_or_404(Question, pk=id)
+    # Here we should check if the user is the same as the creator of the poll, not only if the user is logged in
+    # The fix is the check that too, so this is a case of broken access control
+    if not request.user.is_authenticated:
+    #if not request.user.is_authenticated or question.owner != request.user:
+        return HttpResponseRedirect("/polls")
     question.delete()
     return HttpResponseRedirect("/polls")
 
